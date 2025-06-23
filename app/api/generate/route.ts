@@ -1,24 +1,28 @@
 import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
+import { getClientIP, checkRateLimit } from "@/lib/rate-limit";
+import { handleError } from "@/lib/response";
 
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIP(req);
+
+    const { success } = await checkRateLimit(ip);
+
+    if (!success) {
+      return handleError("Limit reached, try again later", 429);
+    }
+
     const { messages } = await req.json();
 
     if (!messages || !Array.isArray(messages)) {
-      return Response.json(
-        { error: "Messages array is required" },
-        { status: 400 }
-      );
+      return handleError("Messages array is required", 400);
     }
 
     if (!process.env.OPENAI_API_KEY) {
-      return Response.json(
-        { error: "OpenAI API key not configured" },
-        { status: 500 }
-      );
+      return handleError("OpenAI API key not configured", 500);
     }
 
     const result = streamText({
@@ -36,6 +40,6 @@ export async function POST(req: Request) {
     return result.toDataStreamResponse();
   } catch (error) {
     console.error("Error generating response:", error);
-    return Response.json({ error: "Internal server error" }, { status: 500 });
+    return handleError("Internal server error", 500);
   }
 }

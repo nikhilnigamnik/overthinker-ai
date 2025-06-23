@@ -4,8 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type React from "react";
 import { useState } from "react";
-import { Loader } from "lucide-react";
+import { Loader, AlertCircle } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
+import { RenderIf } from "@/lib/render-if";
 
 export function Overthinker() {
   const { messages, input, setInput, handleSubmit, error, isLoading } = useChat(
@@ -23,14 +24,31 @@ export function Overthinker() {
     handleSubmit(e);
   };
 
-  // Get the latest assistant message
+  const getErrorMessage = (error: any): string => {
+    if (!error) return "";
+
+    let errorMessage = "Please try again!";
+
+    try {
+      if (error.message?.startsWith("{")) {
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.error ?? errorMessage;
+      } else {
+        errorMessage = error.message ?? errorMessage;
+      }
+    } catch {
+      errorMessage = error.message ?? errorMessage;
+    }
+
+    return `Sorry, I got lost in my own thoughts and couldn't generate a response. ${errorMessage}`;
+  };
+
   const latestResponse =
     messages.filter((m) => m.role === "assistant").pop()?.content ?? "";
 
   return (
     <div className="min-h-screen py-16">
       <div className="container mx-auto px-4 space-y-16">
-        {/* Header */}
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-medium mb-4">OverthinkerAI</h1>
           <p className="text-muted-foreground">
@@ -40,9 +58,7 @@ export function Overthinker() {
           </p>
         </div>
 
-        {/* Main Content */}
         <div className="max-w-4xl mx-auto space-y-6">
-          {/* Input Section */}
           <div className="backdrop-blur-sm">
             <form onSubmit={onSubmit} className="space-y-6">
               <div>
@@ -73,18 +89,30 @@ export function Overthinker() {
             </form>
           </div>
 
-          {/* Response Section */}
-          {showResponse && (latestResponse || error) && (
+          <RenderIf
+            condition={showResponse && (!!latestResponse || Boolean(error))}
+          >
             <div className="backdrop-blur-sm">
-              <div className="border text-muted-foreground bg-input/30 p-4">
-                <p className="leading-relaxed">
-                  {error
-                    ? "Sorry, I got lost in my own thoughts and couldn't generate a response. Please try again!"
-                    : latestResponse}
-                </p>
-              </div>
+              <RenderIf condition={Boolean(error)}>
+                <div className="border p-4 bg-input/30">
+                  <div className="flex items-center space-x-3">
+                    <AlertCircle className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="text-muted-foreground leading-relaxed">
+                        {getErrorMessage(error)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </RenderIf>
+
+              <RenderIf condition={!Boolean(error) && !!latestResponse}>
+                <div className="border text-muted-foreground bg-input/30 p-4 leading-relaxed">
+                  <p className="leading-relaxed">{latestResponse}</p>
+                </div>
+              </RenderIf>
             </div>
-          )}
+          </RenderIf>
 
           <div className="mt-8 fixed bottom-10">
             <div>
