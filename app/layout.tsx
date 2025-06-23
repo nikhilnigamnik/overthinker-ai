@@ -1,19 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -30,9 +20,9 @@ export const metadata: Metadata = {
     "spiral",
     "thoughts",
   ],
-  authors: [{ name: "Overthinker.ai" }],
+  authors: [{ name: "OverthinkerAI" }],
   openGraph: {
-    title: "Overthinker.ai - Turn Simple Questions Into Dramatic Spirals",
+    title: "OverthinkerAI - Turn Simple Questions Into Dramatic Spirals",
     description:
       "Externalize your inner anxious thoughts with dramatic, philosophical, and emotionally spiraling overanalysis.",
     type: "website",
