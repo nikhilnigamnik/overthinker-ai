@@ -10,6 +10,7 @@ OverthinkerAI is a fun, AI-powered web application that takes your everyday ques
 
 - **AI-Powered Overthinking**: Uses OpenAI's GPT-4o to generate natural, relatable overthinking responses
 - **Real-time Streaming**: Responses are streamed in real-time for a smooth user experience
+- **Rate Limiting**: Built-in rate limiting to prevent abuse (10 requests per 24 hours per IP)
 - **Simple Interface**: Clean, modern UI built with Next.js and Tailwind CSS
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Daily Inspiration**: Features a "Daily Overthinker" quote for extra existential fuel
@@ -20,6 +21,7 @@ OverthinkerAI is a fun, AI-powered web application that takes your everyday ques
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **AI**: OpenAI GPT-4o via AI SDK
+- **Rate Limiting**: Upstash Redis
 - **UI Components**: Radix UI + custom components
 - **Icons**: Lucide React
 
@@ -29,6 +31,7 @@ OverthinkerAI is a fun, AI-powered web application that takes your everyday ques
 
 1. **Node.js**: Make sure you have Node.js 18+ installed
 2. **OpenAI API Key**: You'll need an OpenAI API key to use this application. Get one from [OpenAI's platform](https://platform.openai.com/api-keys).
+3. **Upstash Redis**: You'll need an Upstash Redis database for rate limiting. Create one at [Upstash](https://upstash.com/).
 
 ### Installation
 
@@ -46,11 +49,22 @@ OverthinkerAI is a fun, AI-powered web application that takes your everyday ques
    ```
 
 3. **Set up environment variables**:
-   Create a `.env.local` file in the root directory and add your OpenAI API key:
+   Create a `.env.local` file in the root directory and add your API keys:
 
    ```bash
+   # OpenAI Configuration
    OPENAI_API_KEY=your_openai_api_key_here
+
+   # Upstash Redis Configuration (for rate limiting)
+   UPSTASH_REDIS_REST_URL=your_redis_rest_url_here
+   UPSTASH_REDIS_REST_TOKEN=your_redis_rest_token_here
    ```
+
+   **To get your Upstash Redis credentials:**
+
+   1. Go to [Upstash Console](https://console.upstash.com/)
+   2. Create a new Redis database
+   3. Copy the `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` from your database details
 
 4. **Run the development server**:
 
