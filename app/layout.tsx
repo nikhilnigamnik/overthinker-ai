@@ -37,14 +37,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {process.env.NODE_ENV === "production" &&
-        process.env.UMAMI_WEBSITE_ID && (
-          <Script
-            defer
-            src="https://cloud.umami.is/script.js"
-            data-website-id={process.env.UMAMI_WEBSITE_ID}
-          ></Script>
-        )}
+      <head>
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id={process.env.UMAMI_WEBSITE_ID}
+        ></Script>
+      </head>
       <body
         className={` ${inter.className} antialiased selection:bg-primary selection:text-primary-foreground`}
       >
