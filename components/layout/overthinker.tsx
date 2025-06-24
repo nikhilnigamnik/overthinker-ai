@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Loader, AlertCircle } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { RenderIf } from "@/lib/render-if";
+import { GithubLink } from "../ui/github-link";
 
 export function Overthinker() {
   const { messages, input, setInput, handleSubmit, error, isLoading } = useChat(
@@ -56,7 +57,10 @@ export function Overthinker() {
   return (
     <div className="py-16 h-[calc(100dvh-2px)] space-y-16">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-medium mb-4">OverthinkerAI</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-medium">OverthinkerAI</h1>
+          <GithubLink />
+        </div>
         <p className="text-muted-foreground">
           Turn your simple questions into dramatic, philosophical spirals.
           Because sometimes you need to externalize your inner anxious thoughts.
