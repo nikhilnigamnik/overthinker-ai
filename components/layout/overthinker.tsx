@@ -21,7 +21,9 @@ export function Overthinker() {
     e.preventDefault();
     if (!input.trim()) return;
     setShowResponse(true);
+    const currentInput = input;
     handleSubmit(e);
+    setTimeout(() => setInput(currentInput), 0);
   };
 
   const handleClear = () => {
@@ -71,7 +73,7 @@ export function Overthinker() {
               id="input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Should I go to this party? Should I text them back? Should I quit my job?"
+              placeholder="Should I quit my job?"
             />
           </div>
 
