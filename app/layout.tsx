@@ -41,7 +41,7 @@ export default function RootLayout({
         <Script
           defer
           src="https://cloud.umami.is/script.js"
-          data-website-id={process.env.UMAMI_WEBSITE_ID}
+          data-website-id="b877f511-7c11-4818-83cb-bef9e29d1a74"
         ></Script>
       </head>
       <body
