@@ -12,7 +12,10 @@ export async function POST(req: Request) {
     const { success } = await checkRateLimit(ip);
 
     if (!success) {
-      return handleError("Limit reached, try again later", 429);
+      return handleError(
+        "Even overthinking needs a timeout. Come back in a bit. Take it easy, man.",
+        429
+      );
     }
 
     const { messages } = await req.json();
